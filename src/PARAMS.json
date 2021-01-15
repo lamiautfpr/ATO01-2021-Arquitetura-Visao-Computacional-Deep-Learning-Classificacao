@@ -1,0 +1,7 @@
+{
+  "BATCH_SIZE" : 32,
+  "EPOCHS" : 4,
+  "INPUT_SHAPE" : [224,224,3],
+  "VALIDATION_SIZE" : 0.1,
+  "TEST_SIZE" : 0.1
+}
