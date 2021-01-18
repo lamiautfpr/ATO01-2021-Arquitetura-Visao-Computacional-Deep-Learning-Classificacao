@@ -1,7 +1,6 @@
 {
   "BATCH_SIZE" : 32,
-  "EPOCHS" : 4,
+  "EPOCHS" : 3,
   "INPUT_SHAPE" : [224,224,3],
-  "VALIDATION_SIZE" : 0.1,
-  "TEST_SIZE" : 0.1
+  "SPLIT_SIZE" : [0.8,0.1,0.1]
 }
