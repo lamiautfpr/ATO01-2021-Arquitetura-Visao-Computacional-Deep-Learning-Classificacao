@@ -8,13 +8,26 @@ def pre_train(batch, cla, img, cim):
       img = Imagem.
       cim = Classe da imagem
   """
-  img = cv2.resize(img, (224,224), cv2.INTER_CUBIC)
+  rot = alb.augmentations.transforms.Rotate(always_apply= True)
+  gns = alb.augmentations.transforms.GaussNoise(always_apply=True)
+  bri = alb.augmentations.transforms.RandomBrightness(always_apply=True)
+
   batch.append(img)
-  cla.append(cim)
+  cla.append(cim) 
+
+  aimg = rot.apply(img,np.random.randint(10,70))
+  batch.append(aimg)
+  cla.append(cim) 
+  
+  aimg = bri.apply(img,np.random.uniform(0.6,0.9))
+  batch.append(aimg)
+  cla.append(cim) 
+
+  aimg = gns.apply(img)
+  batch.append(aimg)
+  cla.append(cim) 
 
 def pre_test(img, cim):
-  img = cv2.resize(img, (224,224), cv2.INTER_CUBIC)
-
   return img, cim
 
 if __name__ == "__main__":

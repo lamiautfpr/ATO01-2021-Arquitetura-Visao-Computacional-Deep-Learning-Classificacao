@@ -13,6 +13,7 @@ def cria_data_frame(BASE_PATH:str) -> pd.DataFrame:
         diretorios = [fn for fn in diretorios if len(fn.split('.')) < 2]  ===> (1)
         var = [fn for fn in os.listdir(diretorios) if fn.split('.')[-1] in ext] ===> (2) / ext = vetor com as extensões
   """
+  or_path = os.path.abspath('.')
   os.chdir(BASE_PATH) #Abre o caminho da base de dados já validada.
   diretorios = os.listdir('.') #Lista os diretótorios da pasta. (1)
   diretorios = sorted(diretorios) #coloca em ordem alfabetica (tambem funciona com números).
@@ -25,6 +26,7 @@ def cria_data_frame(BASE_PATH:str) -> pd.DataFrame:
       cla.append(c) #Fazendo um append (juntando) o valor de classe para cada imagem.
 
   DF = pd.DataFrame({'imagens' : paths , 'classes' : cla}) #Cria um dataframe com os dados que obtivemos acima.
+  os.chdir(or_path)
   return DF #Retorna o DataFrame.
 
 def retorna_indices(train:float, val:float, test:float, total:int) -> np.array:
@@ -61,7 +63,7 @@ class Cross_val():
     tamanho = int(NUM/self.num_folds) #O tamanho de cada fold sem excesso, os excessos vao ser tratados abaixo.
 
     for sub in range(0, NUM, tamanho): #A sub fica com um fold por interação do laço de repetição.
-      self.folds.append(self.indices[sub:sub + tamanho]) #Cria os folds.
+      self.folds.append(self.indices[sub:sub + tamanho].tolist()) #Cria os folds.
 
     if len(self.folds) > FOLDS: #Se tiver um fold a mais na variavel significa que teve sobra, e deve ser tratada.
       resto = self.folds.pop() #Removo e guardo o fold com os restos.
