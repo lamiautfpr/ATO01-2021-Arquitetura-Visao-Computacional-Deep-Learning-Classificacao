@@ -5,19 +5,21 @@ from tensorflow.keras.utils import to_categorical
 from utils import cria_data_frame, retorna_indices
 
 class Generator(object):
-  def __init__(self, BASE_PATH:str, SPLIT_POR:list, BATCH_SIZE:int, PREPRO_FUN, PRETEST_FUN):
+  def __init__(self, BASE_PATH:str, PARAMS, PREPRO_FUN, PRETEST_FUN):
     """
-
     """
-    self.batch_size = BATCH_SIZE 
+    self.batch_size = PARAMS['BATCH_SIZE']
     self.preproc_fun = PREPRO_FUN 
     self.pretest_fun = PRETEST_FUN 
-    self.data_frame = cria_data_frame(BASE_PATH)
+    self.data_frame = cria_data_frame(BASE_PATH, PARAMS)
     self.total_img = self.data_frame.shape[0]
     self.total_class =  len(self.data_frame['classes'].unique())
     self.hold_data = [[],[]]
     
-    self.train_ind, self.val_ind, self.test_ind = retorna_indices(SPLIT_POR[0],SPLIT_POR[1],SPLIT_POR[2],self.total_img)
+    self.train_ind, self.val_ind, self.test_ind = retorna_indices(PARAMS['SPLIT_SIZE'][0], 
+                                                                  PARAMS['SPLIT_SIZE'][1], 
+                                                                  PARAMS['SPLIT_SIZE'][2], 
+                                                                  self.total_img)
 
     self.steps_train = int((len(self.train_ind) / self.batch_size) + 1) 
     self.steps_val = int((len(self.val_ind) / self.batch_size) + 1)
@@ -26,7 +28,6 @@ class Generator(object):
     batch = []
     cla = [] 
     contador = 0 
-
 
     while True: 
       

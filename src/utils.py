@@ -3,29 +3,27 @@ import pandas as pd
 import numpy as np
 import cv2
 import sys
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from matplotlib import pyplot as plt
 
-
-def cria_data_frame(BASE_PATH:str) -> pd.DataFrame:
+def cria_data_frame(BASE_PATH:str, PARAMS) -> pd.DataFrame:
   """
     Função responsável por criar o DataFrame da base de dados
-    comentários:
-      Se nao tivesse teste poderiamos ter utilizado as seguintas linhas
-        diretorios = [fn for fn in diretorios if len(fn.split('.')) < 2]  ===> (1)
-        var = [fn for fn in os.listdir(diretorios) if fn.split('.')[-1] in ext] ===> (2) / ext = vetor com as extensões
   """
   or_path = os.path.abspath('.')
-  os.chdir(BASE_PATH) #Abre o caminho da base de dados já validada.
-  diretorios = os.listdir('.') #Lista os diretótorios da pasta. (1)
-  diretorios = sorted(diretorios) #coloca em ordem alfabetica (tambem funciona com números).
+  os.chdir(BASE_PATH) 
+  diretorios = [dir for dir in os.listdir('.') if os.path.isdir(dir)]
+  diretorios = sorted(diretorios) 
+  PARAMS['QNT_CLA'] = len(diretorios)
 
-  paths = [] #Lista para guardar os caminhos.
-  cla = [] #Lista para guardar as classes das imagens.
-  for c, d in enumerate(diretorios): #A variavel c serve como o valor que representa a classe. (2)
-    for f in sorted(os.listdir(d)): #Percorre as imagens das classes.
-      paths.append(BASE_PATH + '/' + d + '/' + f) #Fazendo um append (juntando) o caminho de cada imagem.
-      cla.append(c) #Fazendo um append (juntando) o valor de classe para cada imagem.
+  paths = []
+  cla = [] 
+  for c, d in enumerate(diretorios):
+    for f in sorted([fil for fil in os.listdir(d) if fil.split('.')[-1] in ['jpg','jpeg','png']]):
+      paths.append(BASE_PATH + '/' + d + '/' + f)
+      cla.append(c)
 
-  DF = pd.DataFrame({'imagens' : paths , 'classes' : cla}) #Cria um dataframe com os dados que obtivemos acima.
+  DF = pd.DataFrame({'imagens' : paths , 'classes' : cla})
   os.chdir(or_path)
   return DF #Retorna o DataFrame.
 
@@ -90,6 +88,19 @@ class Cross_val():
   def get_set_distribuition(self, NUM:int):
     return self.table[NUM] #Retorna os folds a serem usados como treino, val, e teste.
 
+
+def matrix_confusion(pred, real, path):
+  total = len(pred[0])
+  pred = np.argmax(pred,axis=-1)
+  real = np.argmax(real,axis=-1) 
+
+  conf_m = confusion_matrix(real, pred, labels=np.arange(total))
+  fig, ax = plt.subplots(figsize = (10,10))
+
+  cm = ConfusionMatrixDisplay(conf_m, np.arange(total))
+
+  cm.plot(include_values=True, cmap='Blues', ax= ax, xticks_rotation='vertical')
+  plt.savefig(path + '.jpg')
 
 
 if __name__ == "__main__":
