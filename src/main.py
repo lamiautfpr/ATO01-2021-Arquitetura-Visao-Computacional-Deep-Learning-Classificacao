@@ -1,9 +1,10 @@
 import os
-import argparse
-from Generators.Generator import Generator
 import json
-from utils import Cross_val
+import argparse
 import datetime
+from utils import Cross_val
+from Generators.Generator import Generator
+from tensorflow.keras.callbacks import CSVLogger
 
 arg = argparse.ArgumentParser() 
 
@@ -36,14 +37,19 @@ Module_prep = __import__('Prep.' + args.pre_proc, fromlist=['pre_train', 'pre_te
 pre_train = Module_prep.pre_train
 pre_test = Module_prep.pre_test
 
-Module_pos = __import__('Posp.' + args.pos_proc, fromlist=['evaluate'])
-evaluate = Module_pos.evaluate
+Module_posp = __import__('Posp.' + args.pos_proc, fromlist=['evaluate'])
+evaluate = Module_posp.evaluate
 
 #Abre o json com os parametros necessários.
 with open(args.parameters) as f:
   Params = json.load(f)
 
-Params['ARQUIVO'] = args.output + '/' + Params['PREFIX'] + '-' +datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + '/' + Params['PREFIX'] + '-{}' + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + '.json'
+# Params['ARQUIVO'] = args.output + '/' + Params['PREFIX'] + '-' +datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + '/' + Params['PREFIX'] + '-{}' + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + '.json'
+Params['ARQUIVO'] = os.path.join(args.output, 
+                                Params['PREFIX'] + '-' + datetime.datetime.now().strftime("%Y%m%d-%H%M%S"),
+                                Params['PREFIX'] + '-{}' + datetime.datetime.now().strftime("%Y%m%d-%H%M%S") + '.json'
+                                )
+
 os.mkdir(os.path.dirname(Params['ARQUIVO']))
 
 #Instancia o gerador de imagens.
@@ -56,11 +62,16 @@ Model = Module_model.compiled_model(Params['INPUT_SHAPE'], Params['QNT_CLA'])
 #Treino e validação.
 if args.cross_val > 0:
   for EXP in range(args.cross_val):
-    cv = Cross_val(Gen.total_img, args.cross_val)
+    path_out = os.path.join(os.path.dirname(Params['ARQUIVO']), 'FOLD-{}'.format(EXP))
+    os.mkdir(path_out)
 
-    Gen.Redefine(args.database, Params['SPLIT_SIZE'], Params['BATCH_SIZE'], pre_train, pre_test)
+    CsvLog = CSVLogger(os.path.join(path_out, 'logs-{}.csv'.format(EXP)))
 
-    train, val, tes = cv.get_set_distribuition(EXP)
+    CV = Cross_val(Gen.total_img, args.cross_val)
+
+    Gen.Redefine(args.database, Params, pre_train, pre_test)
+
+    train, val, tes = CV.get_set_distribuition(EXP)
     
     Gen.set_indices(train, val, tes)
 
@@ -70,20 +81,22 @@ if args.cross_val > 0:
             steps_per_epoch = Gen.steps_train, 
             validation_data =Gen.val_generator(), 
             validation_steps = Gen.steps_val,
-            callbacks = []
+            callbacks = [CsvLog]
             )
     
-    evaluate(Model, Gen.test_generator, Gen.eval_generator, Params['ARQUIVO'].format('-FOLD|' + str(EXP)+'--'))
+    evaluate(Model, Gen.test_generator, Gen.eval_generator, os.path.join(path_out,'FOLD-' + str(EXP)))
     
 
 else:
+  CsvLog = CSVLogger(os.path.join(os.path.dirname(Params['ARQUIVO']), 'logs.csv'))
+
   Model.fit(x = Gen.train_generator(), 
             batch_size= Params['BATCH_SIZE'], 
             epochs=Params['EPOCHS'], 
             steps_per_epoch = Gen.steps_train, 
             validation_data =Gen.val_generator(), 
             validation_steps = Gen.steps_val,
-            callbacks = []
+            callbacks = [CsvLog]
             )
 
   evaluate(Model, Gen.test_generator, Gen.eval_generator, Params['ARQUIVO'].format('-'))

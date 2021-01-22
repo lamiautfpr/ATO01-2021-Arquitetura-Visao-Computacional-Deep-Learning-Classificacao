@@ -176,5 +176,5 @@ class Generator(object):
     self.val_ind = val_ind
     self.test_ind = test_ind
 
-  def Redefine(self, BASE_PATH:str, SPLIT_POR:list, BATCH_SIZE:int, PREPRO_FUN, PRETEST_FUN):
-    self = self.__init__(BASE_PATH, SPLIT_POR, BATCH_SIZE, PREPRO_FUN, PRETEST_FUN)
+  def Redefine(self, BASE_PATH:str, PARAMS, PREPRO_FUN, PRETEST_FUN):
+    self = self.__init__(BASE_PATH, PARAMS, PREPRO_FUN, PRETEST_FUN)

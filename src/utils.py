@@ -5,6 +5,7 @@ import cv2
 import sys
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from matplotlib import pyplot as plt
+import seaborn as sns
 
 def cria_data_frame(BASE_PATH:str, PARAMS) -> pd.DataFrame:
   """
@@ -101,6 +102,7 @@ def matrix_confusion(pred, real, path):
 
   cm.plot(include_values=True, cmap='Blues', ax= ax, xticks_rotation='vertical')
   plt.savefig(path + '.jpg')
+
 
 
 if __name__ == "__main__":
