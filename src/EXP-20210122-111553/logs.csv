@@ -1,2 +1,0 @@
-epoch,accuracy,auc,false_negatives,loss,precision,val_accuracy,val_auc,val_false_negatives,val_loss,val_precision
-0,0.0,0.5236623287200928,25.0,3.170748472213745,0.21052631735801697,0.0,0.8500000238418579,3.0,1.2627053260803223,1.0

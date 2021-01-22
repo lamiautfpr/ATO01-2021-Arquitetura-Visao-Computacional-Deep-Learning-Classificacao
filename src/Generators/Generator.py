@@ -59,11 +59,11 @@ class Generator(object):
         resto = len(self.train_ind) % self.batch_size
         while not len(batch) == self.batch_size:
           self._filler(batch, cla, self.train_ind) 
-          batch = np.array(batch, np.float32) / 255. 
-          
-          yield (batch, np.array(to_categorical(cla, self.total_class), np.float32))
-          batch = [] 
-          cla = [] 
+        batch = np.array(batch, np.float32) / 255. 
+        
+        yield (batch, np.array(to_categorical(cla, self.total_class), np.float32))
+        batch = [] 
+        cla = [] 
 
   def val_generator(self):
     batch = [] 
@@ -102,11 +102,11 @@ class Generator(object):
         resto = len(self.val_ind) % self.batch_size
         while not len(batch) == self.batch_size:
           self._filler(batch, cla, self.val_ind) 
-          batch = np.array(batch, np.float32) / 255. 
-          
-          yield (batch, np.array(to_categorical(cla, self.total_class), np.float32))
-          batch = [] 
-          cla = [] 
+        batch = np.array(batch, np.float32) / 255. 
+        
+        yield (batch, np.array(to_categorical(cla, self.total_class), np.float32))
+        batch = [] 
+        cla = [] 
 
 
   def test_generator(self):
