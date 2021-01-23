@@ -6,19 +6,19 @@ Esse ambiente tem como objetivo diminuir a necessidade de código para experimen
 
 O Google Colab é uma boa opção para quem nao tem acesso a GPUs para treinamento:
 
-'''cmd
+```cmd
 !python -m Model_nomemodelo -pre nomepreprocessamento -pos nomeposprocessamento -p nomeparametros.json -o pathoutput
-''' 
+``` 
 
 O exemplo acima mostra uma execução simples, mas tambem existe a possibilidade de Cross Validation:
 
-'''cmd
+```cmd
 !python -m Model_nomemodelo -pre nomepreprocessamento -pos nomeposprocessamento -p nomeparametros.json -o pathoutput -cv numfolds
-'''
+```
 
 O arquivo de 'PARAMS.json' é um exemplo dos hyperparametros que devem estar nesse arquivo.
 
-'''json
+```json
 {
   "PREFIX" : "EXP",
   "BATCH_SIZE" : 32,
@@ -26,7 +26,7 @@ O arquivo de 'PARAMS.json' é um exemplo dos hyperparametros que devem estar nes
   "INPUT_SHAPE" : [224,224,3],
   "SPLIT_SIZE" : [0.8,0.1,0.1]
 }
-'''
+```
 
 PREFIX = Prefixo do output.
 SPLIT_SIZE = As porcentagens de treino, validation, teste.
