@@ -60,3 +60,8 @@ Ainda nao passei por todos os erros, mas alguns sao:
 - pasta .pynb_checkpoints no Colab = Exclua a pasta se ela estiver em sua base de dados. Verifique pelo drive.
 
 Caso tenha algum problema verifique sempre se o formato das funções estão corretos.
+
+## Melhorias futuras
+- Melhorar os testes dos arquivos.
+- Melhorar a visualização de resultados (API e web application em desenvolvimento).
+- Prevenir mais erros.
