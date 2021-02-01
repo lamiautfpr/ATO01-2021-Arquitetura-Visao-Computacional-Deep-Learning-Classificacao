@@ -5,6 +5,7 @@ import datetime
 from utils import Cross_val
 from Generators.Generator import Generator
 from tensorflow.keras.callbacks import CSVLogger
+from tensorflow.keras.models import save_model
 
 arg = argparse.ArgumentParser() 
 
@@ -86,6 +87,7 @@ if args.cross_val > 0:
     
     evaluate(Model, Gen.test_generator, Gen.eval_generator, os.path.join(path_out,'FOLD-' + str(EXP)))
     
+    save_model(Model, os.path.join(path_out,'MODEL-' + str(EXP) + '.tf'),save_format="tf")
 
 else:
   CsvLog = CSVLogger(os.path.join(os.path.dirname(Params['ARQUIVO']), 'logs.csv'))
@@ -100,3 +102,5 @@ else:
             )
 
   evaluate(Model, Gen.test_generator, Gen.eval_generator, Params['ARQUIVO'].format('-'))
+
+  save_model(Model, os.path.join(os.path.dirname(Params['ARQUIVO']), "MODEL-W.tf"))

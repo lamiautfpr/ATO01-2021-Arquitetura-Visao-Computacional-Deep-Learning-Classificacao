@@ -7,6 +7,7 @@ from utils import cria_data_frame, retorna_indices
 class Generator(object):
   def __init__(self, BASE_PATH:str, PARAMS, PREPRO_FUN, PRETEST_FUN):
     """
+      Classe de gerador, cria os geradores necessários para o treinamento, validação e teste.
     """
     self.batch_size = PARAMS['BATCH_SIZE']
     self.preproc_fun = PREPRO_FUN 
@@ -25,6 +26,9 @@ class Generator(object):
     self.steps_val = int((len(self.val_ind) / self.batch_size) + 1)
 
   def train_generator(self):
+    """
+      Gerador de imagens para o treinamento. O controle do gerador é feito a partir do steps_per_epoch na função fit do modelo.
+    """
     batch = []
     cla = [] 
     contador = 0 
@@ -66,6 +70,9 @@ class Generator(object):
         cla = [] 
 
   def val_generator(self):
+    """
+      Gerador de imagens para a validação. O controle do gerador é feito a partir do validation_steps na função fit do modelo.
+    """
     batch = [] 
     cla = [] 
     contador = 0 
@@ -110,6 +117,9 @@ class Generator(object):
 
 
   def test_generator(self):
+    """
+      Gerador de imagens para o teste, nao retorna em batch, retorna imagem por imagem com suas respectivas classes.
+    """
     contador = 0 
 
 
@@ -130,6 +140,9 @@ class Generator(object):
       yield (img, cim)
       
   def eval_generator(self):
+    """
+      Gerador separado para função evaluate.
+    """
     batch = [] 
     cla = [] 
     contador = 0 
@@ -162,6 +175,9 @@ class Generator(object):
 
   
   def _filler(self, batch:list, cla:list, indice:list ):
+    """
+      Completa o ultimo batch (caso precise) com imagens (da base) aleatorias .
+    """
     aleatorio = int(np.random.rand() * len(indice))
     
     img = cv2.imread(self.data_frame.iloc[indice[aleatorio]]['imagens']) 

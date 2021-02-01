@@ -36,6 +36,18 @@ SPLIT_SIZE = As porcentagens de treino, validation, teste.
 ## Meus modelos e funções
 
 Existe a possibilidade de fazer um "upload" de modelos a parte, e tambem de funções de pré e pós-processamento, para isso utilize o arquivo 'up.py' que fara os testes básicos para que seu arquivo possa ser passado para o ambiente. 
+
+```cmd
+up.py --type model --path Caminho/do/arquivo
+```
+```
+--type:
+- prep = pré-processamento.
+- posp = pós-processamento.
+- model = modelo.
+```
+
+
 Depois que 'up.py' passou seu modelo para o ambiente, basta colocar o nome do arquivo (sem extensão) no parametro -m da função 'main.py'.
 
 Os modelos sempre devem ter a função 'compiled_model(INPUT_SHAPE:list, QNT_CLASS:int)-> tf.keras.Model' retornando um modelo compilado.
