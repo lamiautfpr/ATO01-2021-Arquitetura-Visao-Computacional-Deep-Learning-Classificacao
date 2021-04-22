@@ -56,6 +56,7 @@ Depois que 'up.py' passou seu modelo para o ambiente, basta colocar o nome do ar
 Os modelos sempre devem ter a função 'compiled_model(INPUT_SHAPE:list, QNT_CLASS:int)-> tf.keras.Model' retornando um modelo compilado.
 
 Os pré-processamentos sempre devem ter as funções 'pre_train(batch, cla, img, cim)' sem retorno, apenas adicionando ao batch e cla, e 'pre_test(img, cim)' retornando a img e a classe. 
+**WARNING: Usar prep_simples pode causar estouro de memória**
 ```
 img = Imagem
 cim = Classe da imagem
