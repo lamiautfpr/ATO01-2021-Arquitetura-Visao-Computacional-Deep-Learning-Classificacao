@@ -2,10 +2,10 @@ import os
 import json
 import argparse
 import datetime
-from utils import Cross_val
-from Generators.Generator import Generator
-from tensorflow.keras.callbacks import CSVLogger
+from Modules.Utils.utils import Cross_val
 from tensorflow.keras.models import save_model
+from tensorflow.keras.callbacks import CSVLogger
+from Modules.Generators.Generator import Generator
 
 arg = argparse.ArgumentParser() 
 
@@ -24,7 +24,7 @@ args = arg.parse_args()
 
 #Aplica os testes.
 if args.teste:
-  if os.system(f'python Testes/Teste_modelo.py -m Models.{args.model}'):
+  if os.system(f'python Testes/Teste_modelo.py -m Modules.Models.{args.model}'):
     print("MODELO INCORRETO.")
     import sys
     sys.exit(1)
@@ -32,13 +32,13 @@ else:
   pass
 
 #Realiza as importações de Modelo, função de pré e pós-processamento.
-Module_model = __import__('Models.' + args.model, fromlist=['compiled_model'])
+Module_model = __import__('Modules.Models.' + args.model, fromlist=['compiled_model'])
 
-Module_prep = __import__('Prep.' + args.pre_proc, fromlist=['pre_train', 'pre_test'])
+Module_prep = __import__('Modules.Prep.' + args.pre_proc, fromlist=['pre_train', 'pre_test'])
 pre_train = Module_prep.pre_train
 pre_test = Module_prep.pre_test
 
-Module_posp = __import__('Posp.' + args.pos_proc, fromlist=['evaluate'])
+Module_posp = __import__('Modules.Posp.' + args.pos_proc, fromlist=['evaluate'])
 evaluate = Module_posp.evaluate
 
 #Abre o json com os parametros necessários.

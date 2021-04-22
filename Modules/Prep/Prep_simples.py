@@ -5,6 +5,13 @@ def pre_train(batch, cla, img, cim):
       cla = Lista de classes das imagens, deve ter o mesmo tamanho do batch, e o indice da imagem no batch deve corresponder com o indice nessa lista.
       img = Imagem.
       cim = Classe da imagem
+
+
+    simple preprocessing function, return raw image.
+      batch = Image list, the image must be appended.
+      cla = Class list.
+      img = Image.
+      cim = Class of image.
   """
 
   batch.append(img)

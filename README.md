@@ -7,16 +7,16 @@ Esse ambiente tem como objetivo diminuir a necessidade de código para experimen
 O Google Colab é uma boa opção para quem nao tem acesso a GPUs para treinamento:
 
 ```cmd
-!python -m Model_nomemodelo -pre nomepreprocessamento -pos nomeposprocessamento -p nomeparametros.json -o pathoutput
+!python main.py -d databasepath -m Model_nomemodelo -pre nomepreprocessamento -pos nomeposprocessamento -p nomeparametros.json -o pathoutput
 ``` 
 
 O exemplo acima mostra uma execução simples, mas tambem existe a possibilidade de Cross Validation:
 
 ```cmd
-!python -m Model_nomemodelo -pre nomepreprocessamento -pos nomeposprocessamento -p nomeparametros.json -o pathoutput -cv numfolds
+!python main.py -d databasepath -m Model_nomemodelo -pre nomepreprocessamento -pos nomeposprocessamento -p nomeparametros.json -o pathoutput -cv numfolds
 ```
 
-O arquivo de 'PARAMS.json' é um exemplo dos hyperparametros que devem estar nesse arquivo.
+O arquivo 'PARAMS.json' é um exemplo dos hyperparametros que devem estar nesse arquivo.
 
 ```json
 {

@@ -9,6 +9,7 @@ arg.add_argument('-m', '--model', required=True, help='Modelo a ser testado.') #
 args = arg.parse_args() #Cria um objeto em que os atributos sao os argumentos passados.
 
 #Atualiza um pythonpath para que eu possa pegar os modulos diretamente de src, e nao da pasta local.
+print(os.path.abspath(os.curdir))
 sys.path.insert(0, os.path.abspath(os.curdir)) 
 
 Module_model = __import__(args.model, fromlist=['compiled_model'])  #Importa o modulo

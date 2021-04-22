@@ -2,12 +2,15 @@ import os
 import cv2
 import numpy as np
 from tensorflow.keras.utils import to_categorical
-from utils import cria_data_frame, retorna_indices
+from Modules.Utils.utils import cria_data_frame, retorna_indices
+
 
 class Generator(object):
   def __init__(self, BASE_PATH:str, PARAMS, PREPRO_FUN, PRETEST_FUN):
     """
       Classe de gerador, cria os geradores necessários para o treinamento, validação e teste.
+
+      Create an image generator for training, validation and test.
     """
     self.batch_size = PARAMS['BATCH_SIZE']
     self.preproc_fun = PREPRO_FUN 
@@ -27,7 +30,9 @@ class Generator(object):
 
   def train_generator(self):
     """
-      Gerador de imagens para o treinamento. O controle do gerador é feito a partir do steps_per_epoch na função fit do modelo.
+      Gerador de imagens para o treinamento.
+
+      Image Generator for training. 
     """
     batch = []
     cla = [] 
@@ -71,7 +76,9 @@ class Generator(object):
 
   def val_generator(self):
     """
-      Gerador de imagens para a validação. O controle do gerador é feito a partir do validation_steps na função fit do modelo.
+      Gerador de imagens para a validação. 
+
+      Image generator for validation.
     """
     batch = [] 
     cla = [] 
@@ -119,6 +126,8 @@ class Generator(object):
   def test_generator(self):
     """
       Gerador de imagens para o teste, nao retorna em batch, retorna imagem por imagem com suas respectivas classes.
+
+      Image generator for test, do not return a batch of image, return one by one and the classes.
     """
     contador = 0 
 
@@ -142,6 +151,8 @@ class Generator(object):
   def eval_generator(self):
     """
       Gerador separado para função evaluate.
+
+      Image generator for the evaluate function.
     """
     batch = [] 
     cla = [] 
@@ -177,6 +188,8 @@ class Generator(object):
   def _filler(self, batch:list, cla:list, indice:list ):
     """
       Completa o ultimo batch (caso precise) com imagens (da base) aleatorias .
+
+      Fill the last batch (if needed) with random images from the database.
     """
     aleatorio = int(np.random.rand() * len(indice))
     

@@ -1,10 +1,10 @@
 import os
 import numpy as np
 import json
-from utils import matrix_confusion
+from Modules.Utils.utils import matrix_confusion
 
 def evaluate(Model, gen_test, gen_eval, arquivo):
-  eval = Model.evaluate(gen_eval(), return_dict=True) #Evaluation do model.
+  eval = Model.evaluate(gen_eval(), return_dict=True) 
   
   with open(arquivo[0:-5]  + '-eval.json', 'w') as f:
     json.dump(eval, f)
