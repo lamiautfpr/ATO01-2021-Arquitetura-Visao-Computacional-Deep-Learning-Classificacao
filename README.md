@@ -2,6 +2,9 @@
 
 Esse ambiente tem como objetivo diminuir a necessidade de código para experimentação rápidas na area de visão computacional, ainda tem a necessidade de diversos ajustes que serão feitos com o tempo.
 
+![image](https://user-images.githubusercontent.com/55769006/115746765-fcea3380-a36a-11eb-96a1-01292e9a753e.png)
+
+
 ## Como utilizar
 
 O Google Colab é uma boa opção para quem nao tem acesso a GPUs para treinamento:
